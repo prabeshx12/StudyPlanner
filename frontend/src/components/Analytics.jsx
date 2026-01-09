@@ -43,7 +43,7 @@ const Analytics = () => {
     const recentQuizzes = quizResults.slice(-5).reverse();
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', height: '100%', overflowY: 'auto', paddingRight: '8px' }}>
             <div className="card" style={{ gridColumn: 'span 2' }}>
                 <h2 style={{ marginBottom: '20px' }}>Study Progress Overview</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>

@@ -25,15 +25,15 @@ function App() {
             <main style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
                 <header style={{ padding: '20px', paddingBottom: '10px', flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        <h1 className="gradient-text" style={{ fontSize: '2rem', margin: 0 }}>AI Study Assistant</h1>
-                        <p style={{ color: 'var(--text-muted)', margin: '5px 0 0 0' }}>Master your exams with AI-powered insights</p>
+                        <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: 'var(--text)' }}>Study Planner</h1>
+                        <p style={{ color: 'var(--text-muted)', margin: '4px 0 0 0', fontSize: '0.9rem' }}>Academic content at your fingertips</p>
                     </div>
-                    <div className="glass" style={{ padding: '8px 16px', borderRadius: 'full' }}>
-                        <span style={{ fontSize: '0.9rem', color: 'var(--accent)' }}>Ready to Learn</span>
+                    <div className="glass" style={{ padding: '8px 16px', borderRadius: '20px' }}>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: '600' }}>Active Session</span>
                     </div>
                 </header>
 
-                <div className="content-area fade-in" style={{ flex: 1, overflowY: 'auto', padding: '20px', paddingTop: '10px' }}>
+                <div className="content-area fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '20px', paddingTop: '10px' }}>
                     {renderContent()}
                 </div>
             </main>

@@ -64,36 +64,58 @@ const Quiz = () => {
         }
     };
 
+    const resetQuiz = () => {
+        setQuestions([]);
+        setQuizFinished(false);
+        setCurrentIdx(0);
+        setScore(0);
+        setSelectedOption(null);
+        setShowResult(false);
+        setError('');
+    };
+
+    const wrapContent = (content) => (
+        <div style={{ height: '100%', overflowY: 'auto', width: '100%', paddingRight: '8px' }}>
+            {content}
+        </div>
+    );
+
     if (loading) {
-        return (
+        return wrapContent(
             <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '300px' }}>
                 <Loader2 size={48} className="animate-spin" color="var(--primary)" />
-                <p style={{ marginTop: '20px', color: 'var(--text-muted)' }}>Generating your personalized quiz...</p>
+                <p style={{ marginTop: '20px', color: 'var(--text-muted)', fontWeight: '500' }}>Preparing your quiz...</p>
             </div>
         );
     }
 
     if (quizFinished) {
-        return (
-            <div className="card" style={{ textAlign: 'center', padding: '50px' }}>
-                <CheckCircle2 size={64} color="var(--success)" style={{ margin: '0 auto 20px' }} />
-                <h2 style={{ marginBottom: '10px' }}>Quiz Completed!</h2>
-                <div style={{ fontSize: '3rem', fontWeight: '800', margin: '20px 0', color: 'var(--primary)' }}>
-                    {score} / {questions.length}
+        return wrapContent(
+            <div className="card" style={{ textAlign: 'center', padding: '40px', maxWidth: '600px', margin: '0 auto' }}>
+                <div style={{ marginBottom: '24px' }}>
+                    <div style={{ width: '80px', height: '80px', background: 'rgba(5, 150, 105, 0.1)', borderRadius: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
+                        <CheckCircle2 size={40} color="var(--success)" />
+                    </div>
                 </div>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '30px' }}>
-                    Great effort! You've mastered {Math.round((score / questions.length) * 100)}% of this material.
+                <h2 style={{ marginBottom: '8px', fontSize: '1.75rem' }}>Quiz Completed!</h2>
+                <div style={{ fontSize: '3.5rem', fontWeight: '800', margin: '16px 0', color: 'var(--text)', letterSpacing: '-2px' }}>
+                    {score}<span style={{ color: 'var(--text-muted)', fontSize: '1.5rem', fontWeight: '400', letterSpacing: '0' }}> / {questions.length}</span>
+                </div>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '1rem', lineHeight: '1.6' }}>
+                    {score === questions.length ? "Perfect score! You've mastered this material." :
+                        score >= questions.length * 0.7 ? "Great job! You have a solid understanding of these concepts." :
+                            "Keep practicing! Reviewing the materials will help you master these topics."}
                 </p>
-                <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
-                    <button className="btn-primary" onClick={() => generateQuiz()}>Try Another</button>
-                    <button className="glass" style={{ padding: '10px 20px', borderRadius: '8px' }} onClick={() => setQuestions([])}>Go Back</button>
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                    <button className="btn-primary" style={{ flex: 1 }} onClick={() => generateQuiz()}>Try Another</button>
+                    <button className="btn-secondary" style={{ flex: 1 }} onClick={resetQuiz}>Go Back</button>
                 </div>
             </div>
         );
     }
 
     if (questions.length === 0) {
-        return (
+        return wrapContent(
             <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
                 <h2 style={{ marginBottom: '20px' }}>Generate Practice Quiz</h2>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '30px' }}>
@@ -139,7 +161,7 @@ const Quiz = () => {
 
     const currentQ = questions[currentIdx];
 
-    return (
+    return wrapContent(
         <div className="card" style={{ maxWidth: '800px', margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Question {currentIdx + 1} of {questions.length}</span>

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Send, User, Bot, Loader2, Trash2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 const Chat = () => {
     const [input, setInput] = useState('');
@@ -67,16 +68,24 @@ const Chat = () => {
                     {messages.map((msg) => (
                         <div key={msg.id} className={`message ${msg.sender}`} style={{
                             alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                            background: msg.sender === 'user' ? 'var(--primary)' : 'var(--background)',
-                            color: msg.sender === 'user' ? 'white' : 'var(--text)',
-                            border: msg.sender === 'bot' ? '1px solid var(--border)' : 'none',
-                            marginBottom: '15px'
+                            background: msg.sender === 'user' ? '#e0f2fe' : 'var(--surface)',
+                            color: msg.sender === 'user' ? '#0369a1' : 'var(--text)',
+                            border: '1px solid var(--border)',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+                            marginBottom: '15px',
+                            fontWeight: '500'
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px', fontSize: '0.75rem', opacity: 0.8 }}>
                                 {msg.sender === 'user' ? <User size={14} /> : <Bot size={14} />}
                                 <span>{msg.sender === 'user' ? 'You' : 'Assistant'}</span>
                             </div>
-                            <div style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>{msg.text}</div>
+                            <div className="markdown-content" style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                                {msg.sender === 'bot' ? (
+                                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                                ) : (
+                                    msg.text
+                                )}
+                            </div>
                             {msg.sources && msg.sources.length > 0 && (
                                 <div style={{ marginTop: '10px', fontSize: '0.7rem', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '5px' }}>
                                     <strong>Sources: </strong> {Array.from(new Set(msg.sources)).join(', ')}

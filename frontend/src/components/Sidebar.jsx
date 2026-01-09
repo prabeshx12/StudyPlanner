@@ -33,10 +33,10 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
     ];
 
     return (
-        <aside className="glass" style={{ width: '260px', margin: '20px', borderRadius: '24px', display: 'flex', flexDirection: 'column', padding: '30px 15px' }}>
+        <aside className="glass" style={{ width: '260px', margin: '20px', height: 'calc(100% - 40px)', borderRadius: '24px', display: 'flex', flexDirection: 'column', padding: '30px 15px', flexShrink: 0 }}>
             <div style={{ marginBottom: '40px', paddingLeft: '15px' }}>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Prep<span style={{ color: 'var(--primary)' }}>AI</span></h2>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '5px' }}>Study Smarter</p>
+                <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--text)' }}>Study<span style={{ color: 'var(--primary)' }}>Planner</span></h2>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>Organize your learning</p>
             </div>
 
             <nav style={{ flex: 1 }}>

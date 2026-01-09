@@ -25,7 +25,7 @@ const Upload = () => {
     };
 
     return (
-        <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
+        <div className="card" style={{ maxWidth: '600px', margin: '0 auto', width: '100%', height: '100%', overflowY: 'auto' }}>
             <h2 style={{ marginBottom: '20px' }}>Upload Study Materials</h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '30px' }}>
                 Upload your syllabus, PDFs, or notes. Our AI will index them for personalized learning and quiz generation.
