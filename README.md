@@ -1,198 +1,109 @@
-# 🎓 AI Study Assistant (PrepAI)
+# 🎓 StudyPlanner: Your AI Study Companion
 
-An intelligent study companion that uses AI to help students learn more effectively through RAG-based chat, quiz generation, and progress tracking.
+StudyPlanner is a professional, high-performance local AI study assistant. It uses Retrieval-Augmented Generation (RAG) to turn your textbooks, notes, and syllabi into an interactive learning environment where you can chat with your documents, generate custom practice quizzes, and track your academic progress—all for free.
 
-## ✨ Features
+## ✨ Key Features
 
-- 📚 **Document Upload**: Upload PDF study materials (textbooks, notes, syllabi)
-- 💬 **AI Chat**: Ask questions about your study materials and get contextual answers
-- 📝 **Quiz Generation**: Auto-generate MCQ quizzes from your uploaded content
-- 📊 **Analytics**: Track your progress and identify weak areas
-- 🎨 **Modern UI**: Beautiful glassmorphism design with smooth animations
+- 📚 **Smart Digital Library**: Upload text-based PDFs. The AI indexes them for instant semantic search and retrieval.
+- 💬 **Contextual Study Chat**: Ask questions directly about your course materials. Get precise answers with Markdown formatting (lists, bolding, code) and source citations.
+- 📝 **Dynamic Practice Quizzes**: Generate randomized MCQ quizzes from different parts of your material. Features diverse questions, instant feedback, and detailed explanations.
+- 📊 **Progress Analytics**: Track your quiz history, average accuracy, and study trends. Reset your stats anytime to start a new subject.
+- 🎨 **Ultra-Legible "Paper" Theme**: Optimized for long study sessions with a soft, anti-glare background and high-contrast charcoal text to reduce eye strain.
+- 💾 **Local-First Storage**: All your study data (quiz results, history) is stored directly in your browser's local storage for privacy and speed.
 
-## 🚀 Tech Stack
+## 🚀 Technical Architecture
 
-### Backend
-- **FastAPI** - Modern Python web framework
-- **LangChain** - RAG orchestration
-- **FAISS** - Vector database for semantic search
-- **Groq** - Fast, free LLM API (Llama 3.3 70B)
-- **HuggingFace** - Local embeddings (free, no API key needed)
+### Backend (Python)
+- **FastAPI**: High-performance asynchronous web framework.
+- **LangChain**: Orchestrating the RAG pipeline and document processing.
+- **FAISS**: Local vector database for lightning-fast semantic retrieval.
+- **Groq (Llama 3.3 70B)**: State-of-the-art LLM provider for fast, intelligent reasoning.
+- **HuggingFace Embeddings**: Uses `all-MiniLM-L6-v2` locally (no API key needed, zero latency).
 
-### Frontend
-- **React** (Vite) - Fast, modern UI framework
-- **Axios** - HTTP client
-- **Lucide Icons** - Beautiful icon set
-- **Framer Motion** - Smooth animations
-
-## 📋 Prerequisites
-
-- **Python 3.9+**
-- **Node.js 16+**
-- **Groq API Key** (free from https://console.groq.com/)
+### Frontend (React)
+- **Vite**: Modern build tool for a snappy development experience.
+- **Lucide-React**: Clean, professional iconography.
+- **React-Markdown**: High-fidelity rendering of AI responses.
+- **Modern CSS**: Custom responsive layout with internal scrolling ("Window-Fit" design).
 
 ## 🛠️ Installation & Setup
 
-### 1. Clone the repository
-```bash
-git clone <your-repo-url>
-cd CIC_latest
-```
+### 1. Requirements
+- **Python 3.9+**
+- **Node.js 18+**
+- **Groq API Key** (Get one for free at [console.groq.com](https://console.groq.com/))
 
 ### 2. Backend Setup
-
 ```bash
-# Create virtual environment
-python -m venv venv
+# Enter project directory
+cd CIC_latest
 
-# Activate virtual environment
-# On Windows:
-.\venv\Scripts\activate
-# On Mac/Linux:
-source venv/bin/activate
+# Create and activate virtual environment
+python -m venv venv
+.\venv\Scripts\activate  # On Linux/Mac: source venv/bin/activate
 
 # Install dependencies
 cd backend
 pip install -r requirements.txt
 
-# Configure environment variables
-cp .env.example .env
-# Edit .env and add your GROQ_API_KEY
+# Configure API Key
+# Rename .env.example to .env and add your key:
+# GROQ_API_KEY=your_groq_api_key_here
 ```
 
 ### 3. Frontend Setup
-
 ```bash
 cd frontend
 npm install
 ```
 
-### 4. Run the Application
+### 4. Running the App
+- **Start Backend**: `cd backend && python main.py`
+- **Start Frontend**: `cd frontend && npm run dev`
+- **Access App**: `http://localhost:5173`
 
-**Terminal 1 - Backend:**
-```bash
-cd backend
-python main.py
-```
+## 📖 Feature Guide
 
-**Terminal 2 - Frontend:**
-```bash
-cd frontend
-npm run dev -- --port 5173
-```
+### 📂 Uploading Content
+- Drag or select a **text-based PDF** (scanned images are not yet supported).
+- Click **"Start Processing"** to index.
+- Use **"Clear All Files"** to wipe your digital library and search index for a new subject.
 
-**Access the app:** http://localhost:5173
+### 📝 Taking Quizzes
+- Select the number of questions (5, 10, or 15).
+- The AI shuffles through your entire context to ensure **variety** and **no repetition**.
+- Set to a higher "Temperature" (0.7) for creative and diverse question sets.
 
-## 🔑 API Keys
-
-### Groq API Key (Required)
-1. Go to https://console.groq.com/
-2. Sign up for a free account
-3. Create an API key
-4. Add it to `backend/.env`:
-   ```
-   GROQ_API_KEY=your_key_here
-   ```
-
-### OpenAI API Key (Optional)
-- Only needed if you want to use OpenAI embeddings instead of local HuggingFace embeddings
-- The app works perfectly with free local embeddings!
-
-## 📖 Usage
-
-1. **Upload Study Materials**
-   - Click "Upload Study Materials"
-   - Select a PDF file (must be text-based, not scanned images)
-   - Wait for processing to complete
-
-2. **Chat with Your Materials**
-   - Go to "Study Chat"
-   - Ask questions about your uploaded content
-   - Get AI-powered answers with source citations
-
-3. **Generate Quizzes**
-   - Go to "Generate Quiz"
-   - Click "Generate New Quiz"
-   - Answer questions and get instant feedback
-
-4. **Track Progress**
-   - Go to "Analytics"
-   - View your quiz scores and identify weak areas
-
-## 📝 Supported PDF Formats
-
-✅ **Works with:**
-- Text-based PDFs (where you can select/copy text)
-- Digital documents (Word → PDF, typed documents)
-- Most modern PDFs with embedded text
-
-❌ **Doesn't work with:**
-- Scanned images (without OCR)
-- Image-heavy PDFs with no text
-- Handwritten notes (scanned)
-
-**How to check:** Open your PDF and try to select text. If you can select it, it will work!
+### 📈 Tracking Progress
+- View your **Usage Statistics** (shown in KB or % in the sidebar).
+- Review recent quiz history and performance insights.
+- Use **"Reset Statistics"** in the Progress tab to clear your local records.
 
 ## 🏗️ Project Structure
-
 ```
-CIC_latest/
+StudyPlanner/
 ├── backend/
-│   ├── api/           # API endpoints
-│   ├── core/          # RAG logic
-│   ├── db/            # FAISS vector store
-│   ├── uploads/       # Uploaded PDFs
-│   └── main.py        # FastAPI app
+│   ├── api/           # Router endpoints (Chat, Quiz, Upload)
+│   ├── core/          # RAGManager (Indexing, Search, Generation)
+│   ├── db/            # FAISS Local index storage
+│   ├── uploads/       # Physical PDF storage
+│   └── main.py        # FastAPI Entry point
 ├── frontend/
 │   ├── src/
-│   │   ├── components/  # React components
-│   │   ├── App.jsx      # Main app
-│   │   └── index.css    # Styles
+│   │   ├── components/  # Modular UI (Chat, Quiz, Sidebar, etc.)
+│   │   ├── App.jsx      # Root component & Routing logic
+│   │   └── index.css    # Paper Theme & Design System
 │   └── package.json
 └── README.md
 ```
 
-## 🐛 Troubleshooting
-
-### "No documents uploaded yet"
-- Make sure you uploaded a PDF successfully
-- Check that the PDF is text-based (not a scanned image)
-- Restart the backend server
-
-### "Model decommissioned" error
-- The Groq model name in `.env` might be outdated
-- Update `MODEL_NAME` to `llama-3.3-70b-versatile`
-
-### Quiz generation fails
-- Ensure your PDF has extractable text
-- Try uploading a different PDF
-- Check backend logs for errors
-
-### Frontend won't connect to backend
-- Ensure backend is running on port 8000
-- Check CORS settings in `backend/main.py`
-- Verify frontend is pointing to `http://localhost:8000`
-
 ## 🎯 Current Status
-
-✅ **Fully Functional:**
-- PDF upload and processing
-- RAG-based chat with citations
-- Quiz generation from study materials
-- Progress tracking and analytics
-- 100% free to run (using Groq + local embeddings)
-
-## 📄 License
-
-MIT License - feel free to use for your studies!
-
-## 🙏 Acknowledgments
-
-- **Groq** for providing fast, free LLM API
-- **HuggingFace** for free local embeddings
-- **LangChain** for RAG framework
-- **FastAPI** for the amazing Python web framework
+- ✅ **Fully Resolved**: Global scrolling issues removed.
+- ✅ **Optimized**: High-legibility eye-care theme implemented.
+- ✅ **Fixed**: Backend robust deletion for Windows file handling.
+- ✅ **Upgraded**: Markdown support for better reading in Chat.
 
 ---
 
-**Happy Studying! 📚✨**
+**Happy Studying! 📚✨** 
+*StudyPlanner - Academic content at your fingertips.*
