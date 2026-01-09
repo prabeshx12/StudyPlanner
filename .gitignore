@@ -1,0 +1,43 @@
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Environment Variables
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+.npm
+.eslintcache
+.stylelintcache
+
+# Backend Specific Data
+backend/db/faiss_index/
+backend/uploads/
+backend/pdf_analysis.txt
+backend/simple_analysis.txt
+backend/check_pdf.py
+backend/check_status.py
+backend/check_simple_pdf.py
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
