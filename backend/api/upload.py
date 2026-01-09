@@ -23,3 +23,11 @@ async def upload_document(file: UploadFile = File(...)):
         return {"filename": file.filename, "chunks": num_chunks, "message": "Document ingested successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.delete("/clear")
+async def clear_documents():
+    try:
+        rag_manager.clear_database()
+        return {"message": "All documents cleared successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

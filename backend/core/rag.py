@@ -45,10 +45,10 @@ class RAGManager:
         self.vector_store = None
         self._load_vector_store()
 
-    def _get_llm(self):
-        # Prefer Groq if available (Free Tier is generous)
+    def _get_llm(self, temperature: float = 0):
+        # Prefer Groq if available
         if os.getenv("GROQ_API_KEY"):
-            return ChatGroq(model_name="llama-3.3-70b-versatile", temperature=0)
+            return ChatGroq(model_name="llama-3.3-70b-versatile", temperature=temperature)
         
         raise ValueError("GROQ_API_KEY not found! Please check your .env file.")
             
@@ -115,11 +115,24 @@ class RAGManager:
         if not self.vector_store:
             return "No documents uploaded yet."
 
-        llm = self._get_llm()
-        docs = self.vector_store.similarity_search("key concepts and definitions", k=5)
-        context = "\n\n".join([doc.page_content for doc in docs])
+        import random
+        # Higher temperature for variety in questions
+        llm = self._get_llm(temperature=0.7)
+        
+        # Define a few potential search seeds for variety
+        seeds = ["key concepts", "important definitions", "summary", "main topics", "details", "core principles"]
+        query = random.choice(seeds)
+        
+        # Get more docs and shuffle them for variety
+        docs = self.vector_store.similarity_search(query, k=15)
+        random.shuffle(docs)
+        selected_docs = docs[:6] # Grab a random slice for variety
+        
+        context = "\n\n".join([doc.page_content for doc in selected_docs])
 
         prompt_text = f"""Based on the following context from study materials, generate {num_questions} Multiple Choice Questions (MCQs).
+        
+IMPORTANT: Ensure the questions are diverse and cover different parts of the context provided. Do not repeat the same questions.
 
 Each question should:
 - Have 4 options labeled A, B, C, D
@@ -139,9 +152,39 @@ Format your response as a valid JSON array like this:
 Context:
 {context}
 
-Generate exactly {num_questions} questions based on this context. Return ONLY the JSON array, no other text."""
+Generate exactly {num_questions} questions BASED ON THE CONTEXT. Return ONLY the JSON array, no other text."""
 
         response = llm.invoke(prompt_text)
         return response.content
+
+    def clear_database(self):
+        import shutil
+        import time
+        # Clear in-memory state
+        self.vector_store = None
+        
+        # Give a moment for file handles to close
+        time.sleep(0.5)
+        
+        # Clear database folder
+        if os.path.exists(self.db_path):
+            try:
+                shutil.rmtree(self.db_path)
+            except Exception as e:
+                print(f"Retry clearing db: {e}")
+                # If rmtree fails, the folder stays but we try to clear contents
+                pass
+            
+        # Clear uploads folder
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        uploads_dir = os.path.join(base_dir, "uploads")
+        if os.path.exists(uploads_dir):
+            try:
+                shutil.rmtree(uploads_dir)
+                os.makedirs(uploads_dir, exist_ok=True)
+            except:
+                pass
+            
+        return True
 
 rag_manager = RAGManager()

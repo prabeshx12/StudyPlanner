@@ -42,10 +42,39 @@ const Analytics = () => {
     // Get recent quiz history
     const recentQuizzes = quizResults.slice(-5).reverse();
 
+    const handleReset = () => {
+        if (window.confirm("Are you sure you want to reset all your progress and quiz history? This cannot be undone.")) {
+            localStorage.removeItem('quizResults');
+            setQuizResults([]);
+            setStats({
+                quizzesCompleted: 0,
+                avgAccuracy: 0,
+                totalQuestions: 0,
+                bestScore: 0
+            });
+        }
+    };
+
     return (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', height: '100%', overflowY: 'auto', paddingRight: '8px' }}>
             <div className="card" style={{ gridColumn: 'span 2' }}>
-                <h2 style={{ marginBottom: '20px' }}>Study Progress Overview</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <h2 style={{ margin: 0 }}>Study Progress Overview</h2>
+                    <button
+                        onClick={handleReset}
+                        style={{
+                            background: 'transparent',
+                            border: '1px solid var(--border)',
+                            color: 'var(--error)',
+                            padding: '6px 12px',
+                            borderRadius: '8px',
+                            fontSize: '0.8rem',
+                            fontWeight: '600'
+                        }}
+                    >
+                        Reset Statistics
+                    </button>
+                </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
                     {statCards.map((stat, i) => (
                         <div key={i} className="glass" style={{ padding: '20px', borderRadius: '16px', textAlign: 'center' }}>

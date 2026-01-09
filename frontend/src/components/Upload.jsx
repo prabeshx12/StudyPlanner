@@ -7,6 +7,20 @@ const Upload = () => {
     const [status, setStatus] = useState('idle'); // idle, uploading, success, error
     const [message, setMessage] = useState('');
 
+    const handleClear = async () => {
+        if (!window.confirm("This will permanently delete ALL uploaded documents and search data. Continue?")) return;
+        setStatus('uploading');
+        try {
+            await axios.delete('http://localhost:8000/upload/clear');
+            setFile(null);
+            setStatus('success');
+            setMessage('Digital library has been reset successfully.');
+        } catch (err) {
+            setStatus('error');
+            setMessage('Failed to clear documents.');
+        }
+    };
+
     const handleUpload = async () => {
         if (!file) return;
         setStatus('uploading');
@@ -26,7 +40,23 @@ const Upload = () => {
 
     return (
         <div className="card" style={{ maxWidth: '600px', margin: '0 auto', width: '100%', height: '100%', overflowY: 'auto' }}>
-            <h2 style={{ marginBottom: '20px' }}>Upload Study Materials</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ margin: 0 }}>Upload Study Materials</h2>
+                <button
+                    onClick={handleClear}
+                    style={{
+                        background: 'transparent',
+                        border: '1px solid var(--border)',
+                        color: 'var(--error)',
+                        padding: '6px 12px',
+                        borderRadius: '8px',
+                        fontSize: '0.8rem',
+                        fontWeight: '600'
+                    }}
+                >
+                    Clear All Files
+                </button>
+            </div>
             <p style={{ color: 'var(--text-muted)', marginBottom: '30px' }}>
                 Upload your syllabus, PDFs, or notes. Our AI will index them for personalized learning and quiz generation.
             </p>
@@ -45,14 +75,22 @@ const Upload = () => {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => {
                     e.preventDefault();
-                    if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+                    if (e.dataTransfer.files[0]) {
+                        setFile(e.dataTransfer.files[0]);
+                        setStatus('idle');
+                    }
                 }}
             >
                 <input
                     type="file"
                     accept=".pdf"
                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }}
-                    onChange={(e) => setFile(e.target.files[0])}
+                    onChange={(e) => {
+                        if (e.target.files[0]) {
+                            setFile(e.target.files[0]);
+                            setStatus('idle');
+                        }
+                    }}
                 />
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
                     {file ? (

@@ -10,13 +10,21 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             let total = 0;
             for (let key in localStorage) {
                 if (localStorage.hasOwnProperty(key)) {
-                    total += localStorage[key].length + key.length;
+                    total += (localStorage[key].length + key.length) * 2; // Approx bytes (UTF-16)
                 }
             }
-            // Convert to KB and calculate percentage (assuming 5MB limit)
+
+            const usageMB = total / (1024 * 1024);
             const usageKB = total / 1024;
-            const percentage = Math.min(100, (usageKB / 5120) * 100);
-            setStorageUsage(Math.round(percentage));
+            const percentage = Math.min(100, (usageMB / 5) * 100);
+
+            if (total === 0) {
+                setStorageUsage("0%");
+            } else if (percentage < 0.1) {
+                setStorageUsage(`${usageKB.toFixed(1)} KB`);
+            } else {
+                setStorageUsage(`${percentage.toFixed(1)}%`);
+            }
         };
 
         calculateStorage();
@@ -73,13 +81,13 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             <div className="glass" style={{ padding: '15px', borderRadius: '12px', marginTop: 'auto' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
                     <Database size={16} color="var(--text-muted)" />
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Storage: {storageUsage}%</p>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Storage: {storageUsage}</p>
                 </div>
                 <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px' }}>
                     <div style={{
-                        width: `${storageUsage}%`,
+                        width: `${Math.max(0.5, parseFloat(storageUsage) || 0)}%`,
                         height: '100%',
-                        background: storageUsage > 80 ? 'var(--error)' : 'var(--accent)',
+                        background: parseFloat(storageUsage) > 80 ? 'var(--error)' : 'var(--accent)',
                         borderRadius: '3px',
                         transition: 'width 0.3s ease'
                     }}></div>
