@@ -1,29 +1,29 @@
+# Use official Python image
 FROM python:3.11-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV CACHE_BREAKER=1
+# Prevent Python from writing .pyc files and enable unbuffered logging
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Set work directory
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y \
     build-essential \
-    libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
+# Copy backend code
 COPY . .
 
-# Expose port
+# Create directories for persistence
+RUN mkdir -p db uploads
+
+# Expose the API port
 EXPOSE 8000
 
-# Command to run the application
+# Start server
 CMD ["python", "main.py"]
