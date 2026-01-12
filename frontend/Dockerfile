@@ -1,19 +1,17 @@
-# Build stage
-FROM node:20-slim AS build
+# Use Node.js
+FROM node:18-slim
 
 WORKDIR /app
 
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
+# Copy frontend code
 COPY . .
-RUN npm run build
 
-# Production stage
-FROM nginx:stable-alpine
+# Expose Vite port
+EXPOSE 5173
 
-COPY --from=build /app/dist /usr/share/nginx/html
-# Copy custom nginx config if needed, or use default
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Start dev server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
