@@ -41,3 +41,8 @@ backend/check_simple_pdf.py
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# Project-Specific
+PROJECT_REPORT.pdf
+PROJECT_REPORT.tex
+
